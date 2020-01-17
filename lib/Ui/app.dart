@@ -39,7 +39,7 @@ child: MaterialApp(
         navigatorKey: Routes.sailor.navigatorKey,
         theme: ThemeData(
           backgroundColor: Colors.teal[500],
-            primaryColor:Colors.pinkAccent[700],
+          primaryColor: Color.fromRGBO(58, 66, 86, 1.0),
             accentColor:Colors.pinkAccent[400],
             brightness: Brightness.dark ,
                 fontFamily: 'Georgia',

@@ -8,17 +8,18 @@ import 'package:tourapp/Models/location_models.dart';
  
 class DBHelper {
   static Database _db;
-  static const location_id ="loation_id";
-static const location_name ="loation_name";
+  static const location_id ="location_id";
+static const location_name ="location_name";
 static const state ="state";
 static const type ="type";
 static const pic ="pic";
 static const description ="description";
 static const lat ="lat";
-static const lon ="lon";
+static const longitude ="longitude";
 static const String TABLE = 'Location';
   static const String DB_NAME = 'location.db';
- 
+  // DBHelper._privateConstructor();
+  //   static final DBHelper instance = DBHelper._privateConstructor();
   Future<Database> get db async {
     if (_db != null) {
       return _db;
@@ -30,7 +31,7 @@ static const String TABLE = 'Location';
   initDb() async {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, DB_NAME);
-    var db = await openDatabase(path, version: 1, onCreate: _onCreate);
+    var db = await openDatabase(path, version: 4, onCreate: _onCreate);
     return db;
   }
  
@@ -38,7 +39,7 @@ static const String TABLE = 'Location';
 
 try{
  await db
-        .execute("CREATE TABLE $TABLE ($location_id INTEGER PRIMARY KEY ,$location_name TEXT   ,$state  TEXT  ,$type TEXT ,$pic TEXT ,$description TEXT ,$lat REAL ,$lon  REAL )"  );
+        .execute("CREATE TABLE $TABLE ($location_id INTEGER PRIMARY KEY ,$location_name TEXT   ,$state  TEXT  ,$type TEXT ,$pic TEXT ,$description TEXT ,$lat REAL ,$longitude  REAL )"  );
   
 } on  DatabaseException{
   throw Exception();
@@ -51,10 +52,11 @@ try{
  
 
 
- Future<List<LocationModel>>  getLocation(String  type) async {
+ Future<List<LocationModel>>  getLocation(String  locationType) async {
     var dbClient = await db;
-   // List<Map> maps = await db.query(DatabaseCreator.locationTable,where: "type=?" ,whereArgs: [type]);
-    List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLE  where  type ==$type");
+ List<Map> maps =await   dbClient.query(DBHelper.TABLE, where: "type=?" ,whereArgs: [locationType]);
+ //List<Map> maps = await dbClient.rawQuery("SELECT * FROM location WHERE type= $locationTypetype");
+
     List<LocationModel> locations = [];
     if (maps.length > 0) {
       for (int i = 0; i < maps.length; i++) {
@@ -67,8 +69,8 @@ try{
 
  Future<List<LocationModel>>  getAlLocations() async {
     var dbClient = await db;
-   // List<Map> maps = await db.query(DatabaseCreator.locationTable);
-    List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLE");
+  List<Map> maps = await dbClient.query(DBHelper.TABLE);
+    //List<Map> maps = await dbClient.rawQuery("SELECT * FROM $TABLE");
     List<LocationModel> locations = [];
     if (maps.length > 0) {
       for (int i = 0; i < maps.length; i++) {
@@ -80,27 +82,13 @@ try{
 
  Future<LocationModel> save(LocationModel model) async {
     var dbClient = await db;
-    // employee.id = await dbClient.insert(TABLE, employee.toMap());
-    // return employee;
+     var result = await dbClient.insert(TABLE, model.toJson() ,conflictAlgorithm:ConflictAlgorithm.replace);
+    return model;
   
-    await dbClient.transaction((txn) async {
-      var query = """ INSERT INTO $TABLE ($location_id  ,$location_name ,$state , $type ,$pic ,$description ,
-$lat ,$lon
-      
-      ) 
-      VALUES (
-        ${model.locationId} ,
-          ${model.locationName} ,
-            ${model.state} ,
-              ${model.type} ,
-                ${model.pic} ,
-                  ${model.description} ,
-                    ${model.lat} ,
-                      ${model.longitude} 
-
-      )   " """   ;
-      return await txn.rawInsert(query);
-    });
+    // await dbClient.transaction((txn) async {
+    //   var query = " INSERT INTO $TABLE ($location_id  ,$location_name ,$state , $type ,$pic ,$description ,$lat ,$lon ) VALUES (${model.locationId}  ,${model.locationName} ,${model.state} , ${model.type} ,${model.pic} ,${model.description} , ${model.lat} ,${model.longitude} ) "   ;
+    //   return await txn.rawInsert(query );
+    // });
   
   }
 
@@ -114,4 +102,9 @@ $lat ,$lon
     var dbClient = await db;
     dbClient.close();
   }
+
+
+
+
+
 }

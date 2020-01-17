@@ -41,15 +41,18 @@ class _LocationState extends State<Location> {
 
   void initState() {
     fetchLocatios().then((value) {
-      setState(() {
-        locs.addAll(value);
-        locationToDisplay = locs;
-      });
+      if (this.mounted) {
+        setState(() {
+          locs.addAll(value);
+          locationToDisplay = locs;
+        });
+      }
     });
     // bloc.fetchLocationsByType("other");
     bloc.fetchLocationsByType(widget.locationType);
 
     // TODO: implement
+
     super.initState();
   }
 
@@ -95,7 +98,8 @@ class _LocationState extends State<Location> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
-        decoration: InputDecoration(hintText:AppLocalizations.of(context).translate("search_text")),
+        decoration: InputDecoration(
+            hintText: AppLocalizations.of(context).translate("search_text")),
         onChanged: (text) {
           text = text.toLowerCase();
           setState(() {
@@ -111,33 +115,31 @@ class _LocationState extends State<Location> {
 
   _locationList(int index) {
     return Container(
-      
-        child: Card(
-          color: Colors.teal,
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min, 
-            children: [
-              
-           
+      child: Card(
+        color: Colors.teal,
+        elevation: 10,
+              margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: Container(
+                  decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
             //snapshot.data.locations[index]
 
-            
             Text(
-              locationToDisplay[index].locationName  ,
-               style:
-                  TextStyle( fontStyle: FontStyle.italic ,fontSize: 10.0 ),
-                ) ,
-                  Text(
-                locationToDisplay[index].state ,
-               style:
-                  TextStyle( fontStyle: FontStyle.italic ,fontSize: 10.0),
-                ) ,
-                  
-            
+              json.decode(locationToDisplay[index].locationName)[
+                  AppLocalizations.of(context).translate("lang")],
+              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 10.0),
+            ),
+            Text(
+              json.decode(locationToDisplay[index].state)[
+                  AppLocalizations.of(context).translate("lang")],
+              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 10.0),
+            ),
+
 //
 //          PhotoView(
 //imageProvider: MemoryImage((base64.decode(locationToDisplay[index].pic)),
@@ -158,12 +160,9 @@ class _LocationState extends State<Location> {
 //
 //
 //           ) ,
-           
-            
-Image.memory(base64.decode(locationToDisplay[index].pic) )    ,
-              
-              
-              
+
+            Image.memory(base64.decode(locationToDisplay[index].pic)),
+
             FutureBuilder(
               future: bloc.getDestince(locationToDisplay[index].lat,
                   locationToDisplay[index].longitude),
@@ -174,69 +173,49 @@ Image.memory(base64.decode(locationToDisplay[index].pic) )    ,
                         ? Icons.airplanemode_active
                         : MdiIcons.car),
                     Text(AppLocalizations.of(context).translate("distance")),
-                    Text(snapshot.data.toString() + AppLocalizations.of(context).translate("kilo"))]);
-                     }
-                      else {
+                    Text(snapshot.data.toString() +
+                        AppLocalizations.of(context).translate("kilo"))
+                  ]);
+                } else {
                   return CircularProgressIndicator();
                 }
               },
             ),
 
-
-                    ButtonTheme.bar(
-                      child: ButtonBar(
-                        children: <Widget>[
-                          FlatButton(
-                            color: Colors.pinkAccent,  
-                            child:  Text(AppLocalizations.of(context).translate("map_button"),
-                                style: TextStyle(color: Colors.white)),
-                            onPressed: () {
-Routes.sailor.navigate(
-          '/map',
-          params: {
-            'lat': locationToDisplay[index].lat,
-            'longitude': locationToDisplay[index].longitude,
-            "location": locationToDisplay[index].locationName
-          });
-
-
-                            },
-                          ),
-                          FlatButton(
-                       color: Colors.pinkAccent,     
-                            child:  Text(  AppLocalizations.of(context).translate("detail_button"),
-                                style: TextStyle(color: Colors.white)),
-                            onPressed: () {
-
-
-Routes.sailor.navigate(
-'/detail',
-          params: {
-            'desc': locationToDisplay[index].description,
-            'pic': locationToDisplay[index].pic,
-           
-          });
-
-                              
-                            },
-                          ),
-                        ],
-                      ),
-                    )
-                  ]) ,
-               
-       ),
-        );
-
-      
-       
-        }
-        
-      } 
-    
-      
-    
-  
-
-  
-
+            ButtonTheme.bar(
+              child: ButtonBar(
+                children: <Widget>[
+                  FlatButton(
+                    color: Colors.pinkAccent,
+                    child: Text(
+                        AppLocalizations.of(context).translate("map_button"),
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      Routes.sailor.navigate('/map', params: {
+                        'lat': locationToDisplay[index].lat,
+                        'longitude': locationToDisplay[index].longitude,
+                        "location": locationToDisplay[index].locationName
+                      });
+                    },
+                  ),
+                  FlatButton(
+                    color: Colors.pinkAccent,
+                    child: Text(
+                        AppLocalizations.of(context).translate("detail_button"),
+                        style: TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      Routes.sailor.navigate('/detail', params: {
+                        'desc': locationToDisplay[index].description,
+                        'pic': locationToDisplay[index].pic,
+                      });
+                    },
+                  ),
+                ],
+              ),
+            )
+          ]),
+        ),
+      ),
+    );
+  }
+}

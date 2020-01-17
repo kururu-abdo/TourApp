@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:tourapp/Utils/app_localizations.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class mapPage extends StatefulWidget {
@@ -34,7 +36,7 @@ Completer<WebViewController>  controller =Completer<WebViewController> ();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.location),
+        title: Text(json.decode(widget.location)[AppLocalizations.of(context).translate("lang")]),
       ),
        body: WebView(
 onWebViewCreated: (WebViewController c){

@@ -403,6 +403,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  google_fonts_arabic:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "0d3a24ce153ddaa1cf67ffecef952702fbcd5b6b"
+      url: "git://github.com/emadomedher/google-fonts-arabic.git"
+    source: git
+    version: "1.1.7"
   google_maps_flutter:
     dependency: "direct main"
     description:

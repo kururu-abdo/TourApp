@@ -82,14 +82,14 @@ longitude:locations[index].longitude ,
           child: SearchBar<LocationModel>(
             suggestions: [LocationModel(locationName: "darfour") ,LocationModel(locationName: "kauda")],
             loader: Text(AppLocalizations.of(context).translate("loading")),
-            crossAxisCount: 2,
+           
             minimumChars: 1,
 indexedScaledTileBuilder: (int index) => ScaledTile.count(
   index % 3 == 0 ? 2 : 1,
   1,
 ),
 buildSuggestion: (LocationModel model  , int index){
-Text(model.locationName)  ;
+Text(json.encode(model.locationName))  ;
 },
 hintText:AppLocalizations.of(context).translate("floppy_search_hint"),
 cancellationText: Text(AppLocalizations.of(context).translate("search_cancel")),
@@ -123,11 +123,11 @@ crossAxisSpacing: 10,
 
             
             Text(
-            model.locationName +
+            json.decode(model.locationName)[AppLocalizations.of(context).translate("lang")] +
                   "\n" +
-                 model.state,
+                json.decode(model.state)[AppLocalizations.of(context).translate("lang")],
               style:
-                  TextStyle(fontFamily: "Caveat", fontStyle: FontStyle.italic ,fontWeight: FontWeight.bold),
+                  TextStyle( fontStyle: FontStyle.italic ,fontWeight: FontWeight.bold),
             ),
                           
             FutureBuilder(
