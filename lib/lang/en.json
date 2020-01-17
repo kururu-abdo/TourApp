@@ -1,0 +1,25 @@
+{
+  "title": "Hello!",
+  "Message" : "This is English" ,
+"appTitle" : "tour app" ,
+"tab1Title" : "mesums" ,
+"tab2Title": "pyramids",
+"tab3Title": "other"
+,
+
+"detail_button": "Detail",
+"map_button": "Map",
+"kilo": "K.M",
+"distance": "the distance" ,
+"search_text": "search..." ,
+"floppy_search_hint" : "insert search characters" ,
+"search_cancel" : "cancel" ,
+"loading": "loaing..."
+,
+"lang": "en",
+"alert_title": "Exit App",
+"alert_text": "are you sure to exit the app? ",
+"yes_button": "Yes",
+
+"no_button": "No"
+}
