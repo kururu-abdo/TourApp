@@ -31,7 +31,7 @@ static const String TABLE = 'Location';
   initDb() async {
     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, DB_NAME);
-    var db = await openDatabase(path, version: 4, onCreate: _onCreate);
+    var db = await openDatabase(path, version: 6, onCreate: _onCreate);
     return db;
   }
  
@@ -66,6 +66,22 @@ try{
     return locations;
   }
 
+Future<List<LocationModel>>  search(String  str) async {
+    var dbClient = await db;
+
+ //List<Map> maps =await   dbClient.query(DBHelper.TABLE, where: "location_name LIKE '%s%' " ,whereArgs: [str]);
+List<Map> maps = await dbClient.rawQuery("SELECT * FROM $DB_NAME WHERE $location_name LIKE  '%$str'  " );
+
+    List<LocationModel> locations = [];
+    if (maps.length > 0) {
+      for (int i = 0; i < maps.length; i++) {
+        locations.add(LocationModel.fromJson(maps[i]));
+
+        print("inside search zone");
+      }
+    }
+    return locations;
+  }
 
  Future<List<LocationModel>>  getAlLocations() async {
     var dbClient = await db;

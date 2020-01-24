@@ -21,13 +21,14 @@ class ListItem extends StatelessWidget {
           index != -1
            ?ListTile(
 title:Text(
+ 
                       'This is title $index',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ) ,
 subtitle: Text('This is more details'),
 leading: Icon(MdiIcons.album),
 
-
+//TODO : change shimmer style 
            )
               // Column(
               //     crossAxisAlignment: CrossAxisAlignment.start,

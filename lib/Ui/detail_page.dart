@@ -139,7 +139,19 @@ body: Center(
   child: CustomScrollView(
 slivers: <Widget>[
 SliverAppBar(
-title: Text("Details"),
+leading: IconButton(
+          icon: Icon(
+            Icons.chevron_left,
+            size: 40.0,
+           
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+), 
+
+
+title: Text(AppLocalizations.of(context).translate("detail_title")),
 backgroundColor: Colors.green,
 expandedHeight: 350.0,
 flexibleSpace: FlexibleSpaceBar(

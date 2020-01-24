@@ -16,10 +16,14 @@
 "search_cancel" : "cancel" ,
 "loading": "loaing..."
 ,
+"wait": "please wait",
+"your_loc" :"Your Location" ,
 "lang": "en",
 "alert_title": "Exit App",
 "alert_text": "are you sure to exit the app? ",
 "yes_button": "Yes",
 
-"no_button": "No"
+"no_button": "No" ,
+"detail_title": "details" ,
+"go_here": "go here"
 }

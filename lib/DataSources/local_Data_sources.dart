@@ -10,6 +10,8 @@ Future<List<LocationModel>> getLocationByType(String type);
 
 Future<List<LocationModel>> getAllLocation();
 
+Future<List<LocationModel>> search(String str );
+
 }
 
 class Local implements LocalContract{
@@ -42,7 +44,7 @@ locations=await database.getLocation(type);
 //data.then((value) =>value.map((f)=>dao.insert(f)));
 print("insideide local  data @@ ");
 database.save(data);
-
+dao.insert(data);
 
 
 
@@ -56,6 +58,18 @@ database.save(data);
    final data = await database.getAlLocations();
    List<LocationModel> locations =List() ;
    locations= await database.getAlLocations();
+   return locations;
+  }
+
+  @override
+  Future<List<LocationModel>> search(String str)  async{
+  List<LocationModel> locations =List<LocationModel>() ;
+  //  for (final loc in data2) {
+  //    final location =LocationModel.fromJson(loc);
+  //    locations.add(location);
+  //  }
+locations=await database.search(str);
+
    return locations;
   }
 

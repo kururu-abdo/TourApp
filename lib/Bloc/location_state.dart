@@ -1,15 +1,10 @@
-abstract class LocationState{
-}
-class InitialState extends LocationState{
+abstract class LocationState {}
 
-}
-class ShowMesums extends LocationState {
-  
-}
-class ShowPyramids extends LocationState {
-  
-  
-}
-class ShowOther extends LocationState {
- 
-}
+//TODO: delete  these classes
+class InitialState extends LocationState {}
+
+class ShowMesums extends LocationState {}
+
+class ShowPyramids extends LocationState {}
+
+class ShowOther extends LocationState {}

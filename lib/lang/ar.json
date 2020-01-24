@@ -2,13 +2,14 @@
   "lang" : "ar",
   "title" : "مرحبا!",
   "Message" : "هذه هي اللغة العربي" ,
-  "appTitle" : "دليل المناطق السياحية",
+  "appTitle" : "دليل الأماكن السياحية",
 "tab1Title" : "المتاحف",
 "tab2Title" : "الاهرامات",
 "tab3Title" : "اماكن اخرى" ,
+
 "detail_button" : "التفاصيل",
 "map_button" : "الخريطة" ,
-
+"wait": "انتظر من فضلك..." ,
 "kilo" : "كيلومتر" ,
 "distance" : "المسافة" ,
 "search_text" : "بحث...." ,
@@ -18,7 +19,10 @@
 "alert_text": "هل تود الخروج من التطبيق؟",
 "yes_button": "خروج",
 "loading": "تحميل...",
-"no_button": "ألغاء"
+"no_button": "ألغاء" ,
+"detail_title" : "حول المكان" ,
+"your_loc": "موقعك "  ,
+"go_here" : "اذهب  إلى هنا"
 
 
 }

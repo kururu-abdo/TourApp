@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -40,6 +40,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons. 
 
   cupertino_icons: ^0.1.2
+  flare_flutter: any
   camera:
   dio: ^3.0.7
   path:
@@ -59,8 +60,14 @@ dependencies:
            git: git://github.com/emadomedher/google-fonts-arabic.git
            version:  ^1.1.7
   # Local cache
+  flutter_map: ^0.8.2
+  mapbox_gl: ^0.0.5
+  user_location:
+  flutter_map_marker_cluster:
+  flutter_mapbox_navigation: ^0.0.7
   shared_preferences: ^0.5.3+4
   moor_flutter: ^2.0.0
+  
   geolocator: ^5.1.5
   latlong: ^0.6.1
   location: ^2.3.5
@@ -75,7 +82,7 @@ dependencies:
   bloc_pattern: ^2.3.2
   rxdart: ^0.22.0
   card_settings: ^1.5.5
-  photo_view: ^0.3.1
+  photo_view: ^0.9.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -86,13 +93,14 @@ dev_dependencies:
   chopper_generator: ^3.0.1
   moor_generator: ^2.0.0
   retrofit_generator: ^1.0.2+2
+  google_map_polyline:
   
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/images/icon2.jpeg"
+  image_path: "lib/assets/images/icon2.jpg"
 # The following section is specific to Flutter.
 flutter:
   
@@ -108,6 +116,7 @@ flutter:
     - lib/lang/en.json
     - lib/assets/images/icon.png
     - lib/assets/images/icon2.jpg
+    - lib/assets/images/splash_screen_background.jpg
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -136,9 +145,10 @@ flutter:
      - family: SeymourOne
        fonts:
           - asset: lib/assets/fonts/SeymourOne-Regular.ttf
-  #  - lib/fonts/MyFlutterApp.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
+     - family : Pacifico      
+       fonts:
+          - asset: lib/assets/fonts/Pacifico-Regular.ttf
+         
+  
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

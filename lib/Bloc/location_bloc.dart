@@ -26,6 +26,10 @@ Future<List<LocationModel>> fetchSpecificType(String type ) async{
     List<LocationModel> model = await repo.getLocationType(type);
 return model;
   }
+Future<List<LocationModel>> search(String str ) async{
+    List<LocationModel> model = await repo.search(str);
+return model;
+  }
 
   fetchLocationsByType(String type) async {
     List<LocationModel>   model = await repo.getLocationType(type);
@@ -44,7 +48,7 @@ StreamSubscription<Position> positionStream = geolocator.getPositionStream(locat
         longitude = position==null?0.0 : position.longitude;
 
     });
-    print("the current position is $latitude");
+   
 Position position = await Geolocator().getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
 
 final double far = await Geolocator().distanceBetween(
@@ -58,6 +62,15 @@ print((far /1000).toString() + "km");
 
 }
 
+
+Future<Position> getMyLocation() async{
+Position position = await Geolocator().getLastKnownPosition(desiredAccuracy: LocationAccuracy.high);
+
+return position;
+
+
+
+}
   dispose() {
     _fetcher.close();
     _fetcher2.close();
