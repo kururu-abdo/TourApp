@@ -112,9 +112,9 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,
             onSearch: _getALLocations,
-           
             onItemFound: (LocationModel model, int index) {
               return Container(
+                height: 100.0,
                 child: Card(
                   color: Colors.teal,
                   elevation: 10,
@@ -124,82 +124,182 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                     borderRadius: BorderRadius.circular(15.0),
                   ),
                   child: Container(
-                    height: 20.0,
+                    height: 15.0,
+                    width: double.infinity,
                     decoration:
                         BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
-                    child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      //snapshot.data.locations[index]
+                    child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          //snapshot.data.locations[index]
 
-                      Text(
-                        json.decode(model.locationName)[
-                                AppLocalizations.of(context)
-                                    .translate("lang")] +
-                            "\n" +
-                            json.decode(model.state)[
-                                AppLocalizations.of(context).translate("lang")],
-                        style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.bold),
-                      ),
+                          Text(
+                            json.decode(model.locationName)[
+                                    AppLocalizations.of(context)
+                                        .translate("lang")] +
+                                "\n" +
+                                json.decode(model.state)[
+                                    AppLocalizations.of(context)
+                                        .translate("lang")],
+                            style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold),
+                          ),
 
-                      FutureBuilder(
-                        future: bloc.getDestince(model.lat, model.longitude),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<double> snapshot) {
-                          if (snapshot.hasData) {
-                            return Row(children: [
-                              Icon(snapshot.data >= 800.0
-                                  ? Icons.airplanemode_active
-                                  : MdiIcons.car),
-                              Text(AppLocalizations.of(context)
-                                  .translate("distance")),
-                              Text(snapshot.data.toString() +
-                                  AppLocalizations.of(context)
-                                      .translate("kilo"))
-                            ]);
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        },
-                      ),
+                          FutureBuilder(
+                            future:
+                                bloc.getDestince(model.lat, model.longitude),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<double> snapshot) {
+                              if (snapshot.hasData) {
+                                return Row(children: [
+                                  Icon(snapshot.data >= 800.0
+                                      ? Icons.airplanemode_active
+                                      : MdiIcons.car),
+                                  Text(AppLocalizations.of(context)
+                                      .translate("distance")),
+                                  Text(snapshot.data.toString() +
+                                      AppLocalizations.of(context)
+                                          .translate("kilo"))
+                                ]);
+                              } else {
+                                return CircularProgressIndicator();
+                              }
+                            },
+                          ),
 
-                      ButtonTheme.bar(
-                        child: ButtonBar(
-                          children: <Widget>[
-                            FlatButton(
-                              color: Colors.yellow[300],
-                              child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate("map_button"),
-                                  style: TextStyle(color: Colors.red[500])),
-                              onPressed: () {
-                                Routes.sailor.navigate('/map', params: {
-                                  'lat': model.lat,
-                                  'longitude': model.longitude,
-                                  "location": model.locationName
-                                });
-                              },
+                          ButtonTheme.bar(
+                            child: ButtonBar(
+                              children: <Widget>[
+                                FlatButton(
+                                  color: Colors.yellow[300],
+                                  child: Text(
+                                      AppLocalizations.of(context)
+                                          .translate("map_button"),
+                                      style: TextStyle(color: Colors.red[500])),
+                                  onPressed: () {
+                                    Routes.sailor.navigate('/map', params: {
+                                      'lat': model.lat,
+                                      'longitude': model.longitude,
+                                      "location": model.locationName
+                                    });
+                                  },
+                                ),
+                                FlatButton(
+                                  color: Colors.yellow[300],
+                                  child: Text(
+                                      AppLocalizations.of(context)
+                                          .translate("detail_button"),
+                                      style: TextStyle(color: Colors.red[500])),
+                                  onPressed: () {
+                                    Routes.sailor.navigate('/detail', params: {
+                                      'desc': model.description,
+                                      'pic': model.pic,
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
-                            FlatButton(
-                              color: Colors.yellow[300],
-                              child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate("detail_button"),
-                                  style: TextStyle(color: Colors.red[500])),
-                              onPressed: () {
-                                Routes.sailor.navigate('/detail', params: {
-                                  'desc': model.description,
-                                  'pic': model.pic,
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      )
-                    ]),
+                          )
+                        ]),
                   ),
                 ),
               );
+
+              // Container(
+              //   height: 100.0,
+              //   child: Card(
+              //     color: Colors.teal,
+              //     elevation: 10,
+              //     margin:
+              //         new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+              //     shape: RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.circular(15.0),
+              //     ),
+              //     child: Container(
+              //       height: 15.0,
+              //       width: double.infinity,
+              //       decoration:
+              //           BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+              //       child: Column(
+              //           mainAxisSize: MainAxisSize.min,
+              //           mainAxisAlignment: MainAxisAlignment.start,
+              //           children: [
+              //             //snapshot.data.locations[index]
+
+              //             Text(
+              //               json.decode(model.locationName)[
+              //                       AppLocalizations.of(context)
+              //                           .translate("lang")] +
+              //                   "\n" +
+              //                   json.decode(model.state)[
+              //                       AppLocalizations.of(context)
+              //                           .translate("lang")],
+              //               style: TextStyle(
+              //                   fontStyle: FontStyle.italic,
+              //                   fontWeight: FontWeight.bold),
+              //             ),
+
+              //             FutureBuilder(
+              //               future:
+              //                   bloc.getDestince(model.lat, model.longitude),
+              //               builder: (BuildContext context,
+              //                   AsyncSnapshot<double> snapshot) {
+              //                 if (snapshot.hasData) {
+              //                   return Row(children: [
+              //                     Icon(snapshot.data >= 800.0
+              //                         ? Icons.airplanemode_active
+              //                         : MdiIcons.car),
+              //                     Text(AppLocalizations.of(context)
+              //                         .translate("distance")),
+              //                     Text(snapshot.data.toString() +
+              //                         AppLocalizations.of(context)
+              //                             .translate("kilo"))
+              //                   ]);
+              //                 } else {
+              //                   return CircularProgressIndicator();
+              //                 }
+              //               },
+              //             ),
+
+              //             ButtonTheme.bar(
+              //               child: ButtonBar(
+              //                 children: <Widget>[
+              //                   FlatButton(
+              //                     color: Colors.yellow[300],
+              //                     child: Text(
+              //                         AppLocalizations.of(context)
+              //                             .translate("map_button"),
+              //                         style: TextStyle(color: Colors.red[500])),
+              //                     onPressed: () {
+              //                       Routes.sailor.navigate('/map', params: {
+              //                         'lat': model.lat,
+              //                         'longitude': model.longitude,
+              //                         "location": model.locationName
+              //                       });
+              //                     },
+              //                   ),
+              //                   FlatButton(
+              //                     color: Colors.yellow[300],
+              //                     child: Text(
+              //                         AppLocalizations.of(context)
+              //                             .translate("detail_button"),
+              //                         style: TextStyle(color: Colors.red[500])),
+              //                     onPressed: () {
+              //                       Routes.sailor.navigate('/detail', params: {
+              //                         'desc': model.description,
+              //                         'pic': model.pic,
+              //                       });
+              //                     },
+              //                   ),
+              //                 ],
+              //               ),
+              //             )
+              //           ]),
+              //     ),
+              //   ),
+              // );
             },
           ),
         ),

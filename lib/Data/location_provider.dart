@@ -10,7 +10,7 @@ import 'package:tourapp/DataSources/sqlite_data_base.dart';
 import 'package:tourapp/DataSources/local_Data_sources.dart';
 import 'package:tourapp/DataSources/remote_data_sources.dart';
 import 'package:tourapp/Models/location_models.dart';
-import 'package:tourapp/network/neteork_info.dart';
+import 'package:tourapp/network/network_info.dart';
 
 import 'package:meta/meta.dart';
 
@@ -25,7 +25,6 @@ class LocationProvider {
     var dao = LocationDao();
 
     Future<List<LocationModel>> ls;
-
     if (await net.isConnected) {
       try {
         ls = remote.getLocationByType(type);
@@ -77,7 +76,7 @@ class LocationProvider {
         throw Exception(" server failure");
       }
     } else {
-ls=local.search(str);
+      ls = local.search(str);
       return ls;
     }
 //  net.isConnected;

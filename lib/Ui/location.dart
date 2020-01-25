@@ -54,7 +54,7 @@ class _LocationState extends State<Location> {
     bloc.fetchLocationsByType(widget.locationType);
 
     // TODO: implement
-
+//TODO:  implement the the init function
     super.initState();
   }
 
@@ -117,39 +117,45 @@ class _LocationState extends State<Location> {
 
   _locationList(int index) {
     return Container(
+      //height: MediaQuery.of(context).size.height * .30,
+      width: double.infinity,
       child: Card(
         color: Colors.teal,
         elevation: 10,
         margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(8.0),
         ),
         child: Container(
-          
           decoration: BoxDecoration(
             color: Color.fromRGBO(64, 75, 96, .9),
           ),
           child: Column(
-            
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 //snapshot.data.locations[index]
-
-                Text(
-                  json.decode(locationToDisplay[index].locationName)[
-                      AppLocalizations.of(context).translate("lang")],
-                  style: TextStyle(fontStyle: FontStyle.italic, fontSize: 15.0),
-                ),
-                Text(
-                    json.decode(locationToDisplay[index].state)[
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    json.decode(locationToDisplay[index].locationName)[
                         AppLocalizations.of(context).translate("lang")],
-                    style: TextStyle(
-                      fontStyle: FontStyle.italic,
-                      fontSize: 10.0,
-                      fontWeight: FontWeight.bold,
-                    )),
+                    style:
+                        TextStyle(fontStyle: FontStyle.italic, fontSize: 15.0),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                      json.decode(locationToDisplay[index].state)[
+                          AppLocalizations.of(context).translate("lang")],
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontSize: 10.0,
+                        fontWeight: FontWeight.bold,
+                      )),
+                ),
 
                 // PhotoView(
                 //   imageProvider: MemoryImage(
@@ -168,7 +174,21 @@ class _LocationState extends State<Location> {
                 //   ),
                 // ),
 
-             Image.memory(base64.decode(locationToDisplay[index].pic)),
+                Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8.0),
+                      topRight: Radius.circular(8.0),
+                    ),
+                    child: Image.memory(
+                        base64.decode(locationToDisplay[index].pic),
+
+                        // width: 300,
+                        height: 150,
+                        fit: BoxFit.fill),
+                  ),
+                ),
 
                 FutureBuilder(
                   future: bloc.getDestince(locationToDisplay[index].lat,
@@ -176,15 +196,18 @@ class _LocationState extends State<Location> {
                   builder:
                       (BuildContext context, AsyncSnapshot<double> snapshot) {
                     if (snapshot.hasData) {
-                      return Row(children: [
-                        Icon(snapshot.data >= 800.0
-                            ? Icons.airplanemode_active
-                            : MdiIcons.car),
-                        Text(
-                            AppLocalizations.of(context).translate("distance")),
-                        Text(snapshot.data.toString() +
-                            AppLocalizations.of(context).translate("kilo"))
-                      ]);
+                      return Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Row(children: [
+                          Icon(snapshot.data >= 800.0
+                              ? Icons.airplanemode_active
+                              : MdiIcons.car),
+                          Text(AppLocalizations.of(context)
+                              .translate("distance")),
+                          Text(snapshot.data.toString() +
+                              AppLocalizations.of(context).translate("kilo"))
+                        ]),
+                      );
                     } else {
                       return CircularProgressIndicator();
                     }
