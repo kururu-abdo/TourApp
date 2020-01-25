@@ -209,7 +209,10 @@ class _LocationState extends State<Location> {
                         ]),
                       );
                     } else {
-                      return CircularProgressIndicator();
+                      return SizedBox(
+                          width: 300.0,
+                          height: 300.0,
+                          child: CircularProgressIndicator());
                     }
                   },
                 ),
