@@ -102,6 +102,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     return WillPopScope(
       onWillPop: () {
         alert();
@@ -145,7 +146,7 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                 ListTile(
                   trailing: Icon(Icons.arrow_forward),
                   title:
-                      Text(AppLocalizations.of(context).translate("tab2Title")),
+                      Text(AppLocalizations.of(context).translate("tab3Title")),
                   onTap: () {
                     _selectedType(types[2]);
                     Navigator.pop(context);
@@ -198,17 +199,17 @@ class _MyAppState extends State<MyApp> with SingleTickerProviderStateMixin {
                       controller: tabController,
                       tabs: <Widget>[
                         Tab(
-                          icon: Icon(Icons.looks_one),
+                          // icon: Icon(Icons.looks_one),
                           text: AppLocalizations.of(context)
                               .translate("tab1Title"),
                         ),
                         Tab(
-                          icon: Icon(Icons.looks_two),
+                          // icon: Icon(Icons.looks_two),
                           text: AppLocalizations.of(context)
                               .translate("tab2Title"),
                         ),
                         Tab(
-                          icon: Icon(Icons.looks_3),
+                          // icon: Icon(Icons.looks_3),
                           text: AppLocalizations.of(context)
                               .translate("tab3Title"),
                         )

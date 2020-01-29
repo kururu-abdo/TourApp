@@ -116,141 +116,167 @@ class _LocationState extends State<Location> {
   }
 
   _locationList(int index) {
-    return Container(
-      //height: MediaQuery.of(context).size.height * .30,
-      width: double.infinity,
-      child: Card(
-        color: Colors.teal,
-        elevation: 10,
-        margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Color.fromRGBO(64, 75, 96, .9),
+    return Center(
+      child: Container(
+        //height: MediaQuery.of(context).size.height * .30,
+        width: double.infinity,
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          color: Colors.teal,
+          elevation: 10,
+          // margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
           ),
-          child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                //snapshot.data.locations[index]
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                    json.decode(locationToDisplay[index].locationName)[
-                        AppLocalizations.of(context).translate("lang")],
-                    style:
-                        TextStyle(fontStyle: FontStyle.italic, fontSize: 15.0),
+          child: Container(
+            decoration: index % 2 == 0
+                ? BoxDecoration(
+                    color: Color.fromRGBO(64, 75, 96, .9),
+                  )
+                : BoxDecoration(
+                    color: Color.fromRGBO(95, 75, 96, .9),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Text(
-                      json.decode(locationToDisplay[index].state)[
+            child: Column(
+                // alignment: WrapAlignment.end,
+                // spacing: 10.0,
+                // runSpacing: 20.0,
+
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  //snapshot.data.locations[index]
+
+                  // PhotoView(
+                  //   imageProvider: MemoryImage(
+                  //     (base64.decode(locationToDisplay[index].pic)),
+                  //   ),
+
+                  //   initialScale: PhotoViewComputedScale.contained * 0.8,
+                  //   maxScale: PhotoViewComputedScale.covered * 2,
+                  //   enableRotation: true,
+                  //   // Set the background color to the "classic white"
+                  //   backgroundDecoration: BoxDecoration(
+                  //     color: Theme.of(context).canvasColor,
+                  //   ),
+                  //   loadingChild: Center(
+                  //     child: CircularProgressIndicator(),
+                  //   ),
+                  // ),
+
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15.0),
+                        topRight: Radius.circular(15.0),
+                      ),
+                      child: Image.memory(
+                          base64.decode(locationToDisplay[index].pic),
+
+                          // width: 300,
+                          height: 150,
+                          fit: BoxFit.fill),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 0.05,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      json.decode(locationToDisplay[index].locationName)[
                           AppLocalizations.of(context).translate("lang")],
                       style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontSize: 10.0,
-                        fontWeight: FontWeight.bold,
-                      )),
-                ),
-
-                // PhotoView(
-                //   imageProvider: MemoryImage(
-                //     (base64.decode(locationToDisplay[index].pic)),
-                //   ),
-
-                //   initialScale: PhotoViewComputedScale.contained * 0.8,
-                //   maxScale: PhotoViewComputedScale.covered * 2,
-                //   enableRotation: true,
-                //   // Set the background color to the "classic white"
-                //   backgroundDecoration: BoxDecoration(
-                //     color: Theme.of(context).canvasColor,
-                //   ),
-                //   loadingChild: Center(
-                //     child: CircularProgressIndicator(),
-                //   ),
-                // ),
-
-                Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8.0),
-                      topRight: Radius.circular(8.0),
+                          fontStyle: FontStyle.italic, fontSize: 15.0),
                     ),
-                    child: Image.memory(
-                        base64.decode(locationToDisplay[index].pic),
-
-                        // width: 300,
-                        height: 150,
-                        fit: BoxFit.fill),
                   ),
-                ),
-
-                FutureBuilder(
-                  future: bloc.getDestince(locationToDisplay[index].lat,
-                      locationToDisplay[index].longitude),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<double> snapshot) {
-                    if (snapshot.hasData) {
-                      return Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Row(children: [
-                          Icon(snapshot.data >= 800.0
-                              ? Icons.airplanemode_active
-                              : MdiIcons.car),
-                          Text(AppLocalizations.of(context)
-                              .translate("distance")),
-                          Text(snapshot.data.toString() +
-                              AppLocalizations.of(context).translate("kilo"))
-                        ]),
-                      );
-                    } else {
-                      return SizedBox(
-                          width: 300.0,
-                          height: 300.0,
-                          child: CircularProgressIndicator());
-                    }
-                  },
-                ),
-
-                ButtonTheme.bar(
-                  child: ButtonBar(
-                    children: <Widget>[
-                      FlatButton(
-                        color: Colors.yellow[300],
-                        child: Text(
-                            AppLocalizations.of(context)
-                                .translate("map_button"),
-                            style: TextStyle(color: Colors.red[500])),
-                        onPressed: () {
-                          Routes.sailor.navigate('/map', params: {
-                            'lat': locationToDisplay[index].lat,
-                            'longitude': locationToDisplay[index].longitude,
-                            "location": locationToDisplay[index].locationName
-                          });
-                        },
-                      ),
-                      FlatButton(
-                        color: Colors.yellow[300],
-                        child: Text(
-                            AppLocalizations.of(context)
-                                .translate("detail_button"),
-                            style: TextStyle(color: Colors.red[500])),
-                        onPressed: () {
-                          Routes.sailor.navigate('/detail', params: {
-                            'desc': locationToDisplay[index].description,
-                            'pic': locationToDisplay[index].pic,
-                          });
-                        },
-                      ),
-                    ],
+                  SizedBox(
+                    height: 0.5,
                   ),
-                ), //button bar
-              ]),
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                        json.decode(locationToDisplay[index].state)[
+                            AppLocalizations.of(context).translate("lang")],
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 10.0,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
+
+                  SizedBox(
+                    height: 0.5,
+                  ),
+
+                  FutureBuilder(
+                    future: bloc.getDestince(locationToDisplay[index].lat,
+                        locationToDisplay[index].longitude),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<double> snapshot) {
+                      if (snapshot.hasData) {
+                        return Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Row(children: [
+                            Icon(snapshot.data >= 800.0
+                                ? Icons.airplanemode_active
+                                : MdiIcons.car),
+                            Text(AppLocalizations.of(context)
+                                .translate("distance")),
+                            Text(snapshot.data.toString() +
+                                AppLocalizations.of(context).translate("kilo"))
+                          ]),
+                        );
+                      } else {
+                        return Center(
+                          child: SizedBox(
+                            width: 25.0,
+                            height: 25.0,
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 0.5,
+                  ),
+                  ButtonTheme.bar(
+                    child: ButtonBar(
+                      children: <Widget>[
+                        FlatButton(
+                          color: Colors.yellow[300],
+                          child: Text(
+                              AppLocalizations.of(context)
+                                  .translate("map_button"),
+                              style: TextStyle(color: Colors.red[500])),
+                          onPressed: () {
+                            Routes.sailor.navigate('/map', params: {
+                              'lat': locationToDisplay[index].lat,
+                              'longitude': locationToDisplay[index].longitude,
+                              "location": locationToDisplay[index].locationName
+                            });
+                          },
+                        ),
+                        FlatButton(
+                          color: Colors.yellow[300],
+                          child: Text(
+                              AppLocalizations.of(context)
+                                  .translate("detail_button"),
+                              style: TextStyle(color: Colors.red[500])),
+                          onPressed: () {
+                            Routes.sailor.navigate('/detail', params: {
+                              'desc': locationToDisplay[index].description,
+                              'pic': locationToDisplay[index].pic,
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ), //button bar
+                ]),
+          ),
         ),
       ),
     );

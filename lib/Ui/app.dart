@@ -15,6 +15,7 @@ class App extends StatelessWidget {
 //TODO: change the root material theme
     return Material(
         child: MaterialApp(
+      debugShowCheckedModeBanner: false,
       supportedLocales: [
         const Locale('ar', ''), // Arabic
         const Locale('en', ''),
@@ -40,7 +41,7 @@ class App extends StatelessWidget {
         primarySwatch: Colors.red,
         backgroundColor: Colors.teal[500],
         primaryColor: Color.fromRGBO(58, 66, 86, 1.0),
-        accentColor: Colors.pinkAccent[400],
+        accentColor: Colors.white,
         brightness: bright,
         fontFamily: 'Georgia',
         appBarTheme: AppBarTheme(textTheme: TextTheme(title: AppBarTextStyle)),

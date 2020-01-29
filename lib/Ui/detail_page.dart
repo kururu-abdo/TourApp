@@ -131,9 +131,13 @@ class Details extends StatelessWidget {
 
             title: Text(AppLocalizations.of(context).translate("detail_title")),
 //backgroundColor: Colors.green,
+
             expandedHeight: 350.0,
             flexibleSpace: FlexibleSpaceBar(
-              background: Image.memory(base64.decode(pic)),
+              background: ClipRect(
+                  clipBehavior: Clip.antiAlias,
+                  child: Image.memory(base64.decode(pic),
+                      height: 150, fit: BoxFit.fill)),
             ),
           ),
           SliverFixedExtentList(

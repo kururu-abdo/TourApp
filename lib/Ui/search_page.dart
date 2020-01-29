@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:flappy_search_bar/scaled_tile.dart';
+import 'package:flappy_search_bar/search_bar_style.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -85,16 +87,17 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SearchBar<LocationModel>(
+            listPadding: EdgeInsets.all(10),
             suggestions: [
               LocationModel(locationName: "darfour"),
               LocationModel(locationName: "kauda")
             ],
             loader: Text(AppLocalizations.of(context).translate("loading")),
             minimumChars: 1,
-            indexedScaledTileBuilder: (int index) => ScaledTile.count(
-              index % 3 == 0 ? 2 : 1,
-              1,
-            ),
+            // indexedScaledTileBuilder: (int index) => ScaledTile.count(
+            //   index % 3 == 0 ? 2 : 1,
+            //   1,
+            // ),
             buildSuggestion: (LocationModel model, int index) {
               Text(json.encode(model.locationName));
             },
@@ -109,23 +112,72 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 10,
+            searchBarStyle: SearchBarStyle(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            mainAxisSpacing: 5,
+            crossAxisSpacing: 5,
             onSearch: _getALLocations,
             onItemFound: (LocationModel model, int index) {
               return Container(
-                height: 100.0,
+                decoration: index % 2 == 0
+                    ? BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9))
+                    : BoxDecoration(color: Color.fromRGBO(90, 75, 97, .9)),
+                child: ListTile(
+                  title: Text(
+                      json.decode(model.locationName)[
+                          AppLocalizations.of(context).translate("lang")],
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold)),
+                  subtitle: Text(
+                    json.decode(model.state)[
+                        AppLocalizations.of(context).translate("lang")],
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  trailing: PopupMenuButton(
+                    onSelected: (selected) {
+                      if (selected == "map") {
+                        Routes.sailor.navigate('/map', params: {
+                          'lat': model.lat,
+                          'longitude': model.longitude,
+                          "location": model.locationName
+                        });
+                      } else {
+                        Routes.sailor.navigate('/detail', params: {
+                          'desc': model.description,
+                          'pic': model.pic,
+                        });
+                      }
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return ['map', 'details'].map((f) {
+                        return PopupMenuItem(
+                          value: f,
+                          child: Text(f),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ),
+              );
+              SizedBox(
+                height: 10.0,
+                width: double.infinity,
                 child: Card(
-                  color: Colors.teal,
                   elevation: 10,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  color: Colors.teal,
                   margin:
                       new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Container(
-                    height: 15.0,
-                    width: double.infinity,
+                    // height: 10.0,
+                    // width: double.infinity,
                     decoration:
                         BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
                     child: Column(
@@ -173,7 +225,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                             child: ButtonBar(
                               children: <Widget>[
                                 FlatButton(
-                                  color: Colors.yellow[300],
+                                  color: Colors.yellow[100],
                                   child: Text(
                                       AppLocalizations.of(context)
                                           .translate("map_button"),
@@ -187,7 +239,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                                   },
                                 ),
                                 FlatButton(
-                                  color: Colors.yellow[300],
+                                  color: Colors.yellow[100],
                                   child: Text(
                                       AppLocalizations.of(context)
                                           .translate("detail_button"),
@@ -206,100 +258,6 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                   ),
                 ),
               );
-
-              // Container(
-              //   height: 100.0,
-              //   child: Card(
-              //     color: Colors.teal,
-              //     elevation: 10,
-              //     margin:
-              //         new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(15.0),
-              //     ),
-              //     child: Container(
-              //       height: 15.0,
-              //       width: double.infinity,
-              //       decoration:
-              //           BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
-              //       child: Column(
-              //           mainAxisSize: MainAxisSize.min,
-              //           mainAxisAlignment: MainAxisAlignment.start,
-              //           children: [
-              //             //snapshot.data.locations[index]
-
-              //             Text(
-              //               json.decode(model.locationName)[
-              //                       AppLocalizations.of(context)
-              //                           .translate("lang")] +
-              //                   "\n" +
-              //                   json.decode(model.state)[
-              //                       AppLocalizations.of(context)
-              //                           .translate("lang")],
-              //               style: TextStyle(
-              //                   fontStyle: FontStyle.italic,
-              //                   fontWeight: FontWeight.bold),
-              //             ),
-
-              //             FutureBuilder(
-              //               future:
-              //                   bloc.getDestince(model.lat, model.longitude),
-              //               builder: (BuildContext context,
-              //                   AsyncSnapshot<double> snapshot) {
-              //                 if (snapshot.hasData) {
-              //                   return Row(children: [
-              //                     Icon(snapshot.data >= 800.0
-              //                         ? Icons.airplanemode_active
-              //                         : MdiIcons.car),
-              //                     Text(AppLocalizations.of(context)
-              //                         .translate("distance")),
-              //                     Text(snapshot.data.toString() +
-              //                         AppLocalizations.of(context)
-              //                             .translate("kilo"))
-              //                   ]);
-              //                 } else {
-              //                   return CircularProgressIndicator();
-              //                 }
-              //               },
-              //             ),
-
-              //             ButtonTheme.bar(
-              //               child: ButtonBar(
-              //                 children: <Widget>[
-              //                   FlatButton(
-              //                     color: Colors.yellow[300],
-              //                     child: Text(
-              //                         AppLocalizations.of(context)
-              //                             .translate("map_button"),
-              //                         style: TextStyle(color: Colors.red[500])),
-              //                     onPressed: () {
-              //                       Routes.sailor.navigate('/map', params: {
-              //                         'lat': model.lat,
-              //                         'longitude': model.longitude,
-              //                         "location": model.locationName
-              //                       });
-              //                     },
-              //                   ),
-              //                   FlatButton(
-              //                     color: Colors.yellow[300],
-              //                     child: Text(
-              //                         AppLocalizations.of(context)
-              //                             .translate("detail_button"),
-              //                         style: TextStyle(color: Colors.red[500])),
-              //                     onPressed: () {
-              //                       Routes.sailor.navigate('/detail', params: {
-              //                         'desc': model.description,
-              //                         'pic': model.pic,
-              //                       });
-              //                     },
-              //                   ),
-              //                 ],
-              //               ),
-              //             )
-              //           ]),
-              //     ),
-              //   ),
-              // );
             },
           ),
         ),

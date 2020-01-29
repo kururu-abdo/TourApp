@@ -16,7 +16,6 @@ import 'package:tourapp/Bloc/location_event.dart';
 import 'package:tourapp/Models/location_models.dart';
 import 'package:tourapp/Ui/location.dart';
 
-
 import 'package:tourapp/Ui/search_page.dart';
 import 'package:tourapp/Utils/app_localizations.dart';
 import 'package:tourapp/Utils/location_routes.dart';
@@ -27,22 +26,17 @@ import 'Ui/app.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
+  final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
-    Hive.registerAdapter(LocationModelAdapter(), 0);
+  Hive.registerAdapter(LocationModelAdapter(), 0);
 
   Routes.createRoutes();
   await di.init();
 
-
-
   final locationsBox = await Hive.openBox('locations');
-    final mesumsBox = await Hive.openBox('mesums');
+  final mesumsBox = await Hive.openBox('mesums');
   final pyramidsBox = await Hive.openBox('pyramids');
-    final otherBox = await Hive.openBox('other');
+  final otherBox = await Hive.openBox('other');
 
   runApp(App());
 }
-
-
-

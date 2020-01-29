@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:tourapp/DataSources/local_Data_sources.dart';
 import 'package:tourapp/Models/location_models.dart';
 import 'package:tourapp/Utils/constaints.dart';
@@ -16,8 +17,8 @@ abstract class RemoteContract {
 }
 
 class Remote implements RemoteContract {
-  final Local loc;
-  final http.Client client;
+  final LocalContract loc;
+  final Client client;
 
   Remote({@required this.client, @required this.loc});
 
@@ -35,7 +36,7 @@ class Remote implements RemoteContract {
       } else {
         return loc.getLocationByType(type);
       }
-    } on Exception {
+     } on Exception {
       throw Exception("the are a problem with the internet or the server");
     }
   }
