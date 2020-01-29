@@ -246,11 +246,19 @@ class _LocationState extends State<Location> {
                     child: ButtonBar(
                       children: <Widget>[
                         FlatButton(
-                          color: Colors.yellow[300],
+                          clipBehavior: Clip.antiAlias,
+
+                          color: Colors.blue,
+                          textColor: Colors.white,
+                          disabledColor: Colors.grey,
+                          disabledTextColor: Colors.black,
+                          padding: EdgeInsets.all(8.0),
+                          splashColor: Colors.blueAccent,
+                          // color: Colors.yellow[300],
                           child: Text(
-                              AppLocalizations.of(context)
-                                  .translate("map_button"),
-                              style: TextStyle(color: Colors.red[500])),
+                            AppLocalizations.of(context)
+                                .translate("map_button"),
+                          ),
                           onPressed: () {
                             Routes.sailor.navigate('/map', params: {
                               'lat': locationToDisplay[index].lat,
@@ -260,11 +268,18 @@ class _LocationState extends State<Location> {
                           },
                         ),
                         FlatButton(
-                          color: Colors.yellow[300],
+                          color: Colors.blue,
+                          textColor: Colors.white,
+                          disabledColor: Colors.grey,
+                          disabledTextColor: Colors.black,
+                          padding: EdgeInsets.all(8.0),
+                          splashColor: Colors.blueAccent,
+
+                          // color: Colors.yellow[300],
                           child: Text(
-                              AppLocalizations.of(context)
-                                  .translate("detail_button"),
-                              style: TextStyle(color: Colors.red[500])),
+                            AppLocalizations.of(context)
+                                .translate("detail_button"),
+                          ),
                           onPressed: () {
                             Routes.sailor.navigate('/detail', params: {
                               'desc': locationToDisplay[index].description,
