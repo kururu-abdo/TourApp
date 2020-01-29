@@ -1,6 +1,9 @@
 # tourapp
 
-A new Flutter project.
+this is my tour app   
+made by flutter 
+for students 
+
 
 ## Getting Started
 
