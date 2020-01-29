@@ -38,5 +38,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+ <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyBOelcDjGv8FAX0EziMlNQ9t5FSKNCl40I"/>
+  <meta-data android:name="com.mapbox.token" 
+         android:value="pk.eyJ1Ijoia3VydXJ1OTUiLCJhIjoiY2s1MHZpMDZzMGl2NzNscW4ydWw3cjcxNSJ9.A32cZY1fxzxsR_mqNv7I2w" />
+
+
+
     </application>
 </manifest>

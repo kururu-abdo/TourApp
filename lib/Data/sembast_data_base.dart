@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' as io;
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sembast/sembast.dart';
@@ -22,15 +23,22 @@ if(_dbOpenCompleter== null){
 
   _openCompleter();
 }
+await _dbOpenCompleter.future;
+
+
 }
 Future _openCompleter() async{
-final AppDocumentDir = await getApplicationDocumentsDirectory();
-final dbPath =join(AppDocumentDir.path ,"location.db");
+ io.Directory AppDocumentDir = await getApplicationDocumentsDirectory();
+final dbPath =join(AppDocumentDir.path ,"mydata.db");
 
 
 final database =await databaseFactoryIo.openDatabase(dbPath);
 _dbOpenCompleter.complete(database);
+await _dbOpenCompleter.future;
 }
+
+
+
 
 
 

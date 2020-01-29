@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:card_settings/card_settings.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
@@ -6,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:latlong/latlong.dart';
+import 'package:photo_view/photo_view.dart';
 
 import 'package:sailor/sailor.dart';
 import 'package:shimmer/shimmer.dart';
@@ -41,15 +43,18 @@ class _LocationState extends State<Location> {
 
   void initState() {
     fetchLocatios().then((value) {
-      setState(() {
-        locs.addAll(value);
-        locationToDisplay = locs;
-      });
+      if (this.mounted) {
+        setState(() {
+          locs.addAll(value);
+          locationToDisplay = locs;
+        });
+      }
     });
     // bloc.fetchLocationsByType("other");
     bloc.fetchLocationsByType(widget.locationType);
 
     // TODO: implement
+//TODO:  implement the the init function
     super.initState();
   }
 
@@ -95,7 +100,8 @@ class _LocationState extends State<Location> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextField(
-        decoration: InputDecoration(hintText:AppLocalizations.of(context).translate("search_text")),
+        decoration: InputDecoration(
+            hintText: AppLocalizations.of(context).translate("search_text")),
         onChanged: (text) {
           text = text.toLowerCase();
           setState(() {
@@ -110,133 +116,184 @@ class _LocationState extends State<Location> {
   }
 
   _locationList(int index) {
-    return Container(
-      
+    return Center(
+      child: Container(
+        //height: MediaQuery.of(context).size.height * .30,
+        width: double.infinity,
         child: Card(
+          clipBehavior: Clip.antiAlias,
           color: Colors.teal,
           elevation: 10,
+          // margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(8.0),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min, 
-            children: [
-              
-           
-            //snapshot.data.locations[index]
+          child: Container(
+            decoration: index % 2 == 0
+                ? BoxDecoration(
+                    color: Color.fromRGBO(64, 75, 96, .9),
+                  )
+                : BoxDecoration(
+                    color: Color.fromRGBO(95, 75, 96, .9),
+                  ),
+            child: Column(
+                // alignment: WrapAlignment.end,
+                // spacing: 10.0,
+                // runSpacing: 20.0,
 
-            
-            Text(
-              locationToDisplay[index].locationName  ,
-               style:
-                  TextStyle( fontStyle: FontStyle.italic ,fontSize: 10.0 ),
-                ) ,
-                  Text(
-                locationToDisplay[index].state ,
-               style:
-                  TextStyle( fontStyle: FontStyle.italic ,fontSize: 10.0),
-                ) ,
-                  
-            
-//
-//          PhotoView(
-//imageProvider: MemoryImage((base64.decode(locationToDisplay[index].pic)),
-//
-//
-//          ) ,
-//
-//                    initialScale: PhotoViewComputedScale.contained * 0.8,
-//                     maxScale: PhotoViewComputedScale.covered * 2,
-//        enableRotation: true,
-//        // Set the background color to the "classic white"
-//        backgroundDecoration: BoxDecoration(
-//          color: Theme.of(context).canvasColor,
-//        ),
-//        loadingChild: Center(
-//          child: CircularProgressIndicator(),
-//        ),
-//
-//
-//           ) ,
-           
-            
-Image.memory(base64.decode(locationToDisplay[index].pic) )    ,
-              
-              
-              
-            FutureBuilder(
-              future: bloc.getDestince(locationToDisplay[index].lat,
-                  locationToDisplay[index].longitude),
-              builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
-                if (snapshot.hasData) {
-                  return Row(children: [
-                    Icon(snapshot.data >= 800.0
-                        ? Icons.airplanemode_active
-                        : MdiIcons.car),
-                    Text(AppLocalizations.of(context).translate("distance")),
-                    Text(snapshot.data.toString() + AppLocalizations.of(context).translate("kilo"))]);
-                     }
-                      else {
-                  return CircularProgressIndicator();
-                }
-              },
-            ),
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  //snapshot.data.locations[index]
 
+                  // PhotoView(
+                  //   imageProvider: MemoryImage(
+                  //     (base64.decode(locationToDisplay[index].pic)),
+                  //   ),
 
-                    ButtonTheme.bar(
-                      child: ButtonBar(
-                        children: <Widget>[
-                          FlatButton(
-                            color: Colors.pinkAccent,  
-                            child:  Text(AppLocalizations.of(context).translate("map_button"),
-                                style: TextStyle(color: Colors.white)),
-                            onPressed: () {
-Routes.sailor.navigate(
-          '/map',
-          params: {
-            'lat': locationToDisplay[index].lat,
-            'longitude': locationToDisplay[index].longitude,
-            "location": locationToDisplay[index].locationName
-          });
+                  //   initialScale: PhotoViewComputedScale.contained * 0.8,
+                  //   maxScale: PhotoViewComputedScale.covered * 2,
+                  //   enableRotation: true,
+                  //   // Set the background color to the "classic white"
+                  //   backgroundDecoration: BoxDecoration(
+                  //     color: Theme.of(context).canvasColor,
+                  //   ),
+                  //   loadingChild: Center(
+                  //     child: CircularProgressIndicator(),
+                  //   ),
+                  // ),
 
-
-                            },
-                          ),
-                          FlatButton(
-                       color: Colors.pinkAccent,     
-                            child:  Text(  AppLocalizations.of(context).translate("detail_button"),
-                                style: TextStyle(color: Colors.white)),
-                            onPressed: () {
-
-
-Routes.sailor.navigate(
-'/detail',
-          params: {
-            'desc': locationToDisplay[index].description,
-            'pic': locationToDisplay[index].pic,
-           
-          });
-
-                              
-                            },
-                          ),
-                        ],
+                  Padding(
+                    padding: EdgeInsets.all(5.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15.0),
+                        topRight: Radius.circular(15.0),
                       ),
-                    )
-                  ]) ,
-               
-       ),
-        );
+                      child: Image.memory(
+                          base64.decode(locationToDisplay[index].pic),
 
-      
-       
-        }
-        
-      } 
-    
-      
-    
-  
+                          // width: 300,
+                          height: 150,
+                          fit: BoxFit.fill),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 0.05,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      json.decode(locationToDisplay[index].locationName)[
+                          AppLocalizations.of(context).translate("lang")],
+                      style: TextStyle(
+                          fontStyle: FontStyle.italic, fontSize: 15.0),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 0.5,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                        json.decode(locationToDisplay[index].state)[
+                            AppLocalizations.of(context).translate("lang")],
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontSize: 10.0,
+                          fontWeight: FontWeight.bold,
+                        )),
+                  ),
 
-  
+                  SizedBox(
+                    height: 0.5,
+                  ),
 
+                  FutureBuilder(
+                    future: bloc.getDestince(locationToDisplay[index].lat,
+                        locationToDisplay[index].longitude),
+                    builder:
+                        (BuildContext context, AsyncSnapshot<double> snapshot) {
+                      if (snapshot.hasData) {
+                        return Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Row(children: [
+                            Icon(snapshot.data >= 800.0
+                                ? Icons.airplanemode_active
+                                : MdiIcons.car),
+                            Text(AppLocalizations.of(context)
+                                .translate("distance")),
+                            Text(snapshot.data.toString() +
+                                AppLocalizations.of(context).translate("kilo"))
+                          ]),
+                        );
+                      } else {
+                        return Center(
+                          child: SizedBox(
+                            width: 25.0,
+                            height: 25.0,
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 0.5,
+                  ),
+                  ButtonTheme.bar(
+                    child: ButtonBar(
+                      children: <Widget>[
+                        FlatButton(
+                          clipBehavior: Clip.antiAlias,
+
+                          color: Colors.blue,
+                          textColor: Colors.white,
+                          disabledColor: Colors.grey,
+                          disabledTextColor: Colors.black,
+                          padding: EdgeInsets.all(8.0),
+                          splashColor: Colors.blueAccent,
+                          // color: Colors.yellow[300],
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate("map_button"),
+                          ),
+                          onPressed: () {
+                            Routes.sailor.navigate('/map', params: {
+                              'lat': locationToDisplay[index].lat,
+                              'longitude': locationToDisplay[index].longitude,
+                              "location": locationToDisplay[index].locationName
+                            });
+                          },
+                        ),
+                        FlatButton(
+                          color: Colors.blue,
+                          textColor: Colors.white,
+                          disabledColor: Colors.grey,
+                          disabledTextColor: Colors.black,
+                          padding: EdgeInsets.all(8.0),
+                          splashColor: Colors.blueAccent,
+
+                          // color: Colors.yellow[300],
+                          child: Text(
+                            AppLocalizations.of(context)
+                                .translate("detail_button"),
+                          ),
+                          onPressed: () {
+                            Routes.sailor.navigate('/detail', params: {
+                              'desc': locationToDisplay[index].description,
+                              'pic': locationToDisplay[index].pic,
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ), //button bar
+                ]),
+          ),
+        ),
+      ),
+    );
+  }
+}

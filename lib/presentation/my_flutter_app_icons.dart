@@ -11,7 +11,7 @@
 ///      fonts:
 ///       - asset: fonts/MyFlutterApp.ttf
 ///
-/// 
+///
 /// * Material Design Icons, Copyright (C) Google, Inc
 ///         Author:    Google
 ///         License:   Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
@@ -24,5 +24,6 @@ class MyFlutterApp {
 
   static const _kFontFam = 'MyFlutterApp';
 
-  static const IconData directions_car = const IconData(0xe800, fontFamily: _kFontFam);
+  static const IconData directions_car =
+      const IconData(0xe800, fontFamily: _kFontFam);
 }

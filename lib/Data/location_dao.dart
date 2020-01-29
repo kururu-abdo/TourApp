@@ -59,6 +59,24 @@ return location;
 
 }
 
+Future <List<LocationModel>>  search(String str) async {
+final finder=Finder(
+  filter: Filter.equals("location_name", str)
+);
 
+final recordSnapshot =  await  _locations.find(
+await _db ,
+finder: finder
+
+);
+
+
+return recordSnapshot.map( (snapshot){
+final location =LocationModel.fromJson(snapshot.value);
+//location.locationId =snapshot.key;
+return location;
+}).toList();
+
+}
 
 }
